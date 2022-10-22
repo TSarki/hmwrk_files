@@ -1,6 +1,8 @@
+import os
 from pprint import pprint
+from tkinter import N
 cook_book = {}
-with open('recipes.txt', 'rt', encoding = 'utf-8') as file:
+with open(r'recipes\recipes.txt', 'rt', encoding = 'utf-8') as file:
     for i in file:
         dish_name = i.strip()
         recipe = []
@@ -31,3 +33,32 @@ def get_shop_list_by_dishes(dishes, person_count):
         return 'Недостаточное количество персон!'
 
 print(get_shop_list_by_dishes(['Фахитос', 'Омлет'], 0))
+
+direction = r'C:\Users\user\Desktop\hmwrk_files'
+dir_list = os.listdir(direction)
+files_list = []
+for i in dir_list:
+    if '.txt' in i:
+        files_list.append(i)
+def file_combiner(filelist):
+    line_amount_list = {}
+    sorted_line_amount_list = {}
+    for l in files_list:
+        with open(l, 'rt', encoding = 'utf-8') as file:
+            line_amount = len(file.readlines())
+            line_amount_list[l] = line_amount
+    sorted_line_amount_keys = sorted(line_amount_list, key=line_amount_list.get)  
+    for s in sorted_line_amount_keys:
+        sorted_line_amount_list[s] = line_amount_list[s]
+    # return sorted_line_amount_list 
+    with open(r'recipes\result.txt', 'w', encoding = 'utf-8') as document:
+        for t in sorted_line_amount_list:
+            document.write(f'{t}\n')
+            document.write(f'{sorted_line_amount_list[t]}\n')
+            with open(t, 'rt', encoding = 'utf-8') as file:
+                content = file.read()
+            document.write(f'{content}\n')
+        return document   
+
+
+print(file_combiner('files_list'))
